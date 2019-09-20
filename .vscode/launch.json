@@ -14,7 +14,7 @@
             "type": "java",
             "name": "Debug (Launch)-Application<MERP>",
             "request": "launch",
-            "mainClass": "Application.Application",
+            "mainClass": "com.Application",
             "projectName": "MERP"
         }
     ]
