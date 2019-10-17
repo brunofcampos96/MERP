@@ -1,4 +1,4 @@
-package com.Controller;
+package com.controller;
 
 import java.util.List;
 
@@ -9,34 +9,34 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.Service.ClienteService;
-import com.Entity.ClienteEntity;
+import com.service.ClientService;
+import com.entity.ClientEntity;
 
 @RestController
-public class ClienteController {
-
+public class ClientController extends AbstractController {
+    
     @Autowired
-    ClienteService clienteService;
+    public void setController(ClientService service) {
+        this.service = service;
+    }
     
     @GetMapping("/clientes")
-    private List<ClienteEntity> getAllClientes() {
-        return clienteService.getAllClientes();
+    private List<ClienteEntity> getAll() {
+        super.getAll();
     }
 
     @GetMapping("/clientes/{id}")
-    private ClienteEntity getCliente(@PathVariable("id") Long id) {
-        return clienteService.getClienteById(id);
+    private ClienteEntity get(@PathVariable("id") Long id) {
+        return super.getById(id);
     }
 
     @DeleteMapping("/clientes/{id}")
-    private void deleteCliente(@PathVariable("id") Long id) {
-        clienteService.delete(id);
+    private void delete(@PathVariable("id") Long id) {
+        super.save(id);
     }
 
     @PostMapping("/clientes")
-    private Long savePerson(@RequestBody ClienteEntity cliente) {
-        clienteService.saveOrUpdate(cliente);
-        return cliente.getId();
+    private Long save(@RequestBody Entity client) {
+        return super.save(client);
     }
-
 }
