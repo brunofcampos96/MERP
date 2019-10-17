@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.entity.IEntity;
-import com.repository.AgendaRepository;
+import com.repository.ConsultorioRepository;
 
 @Service
-public class AgendaService extends AbstractService {
+public class ConsultorioService extends AbstractService {
 
     @Autowired
-    public void setRepository(AgendaRepository repository){
+    public void setRepository(ConsultorioRepository repository){
         this.repository = repository;
     }
 	

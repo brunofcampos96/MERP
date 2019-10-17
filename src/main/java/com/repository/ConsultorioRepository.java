@@ -2,9 +2,9 @@ package com.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.Entity.AgendaEntity;
+import com.entity.ConsultorioEntity;
 
 @Repository
-public interface AgendaRepository extends CrudRepository<AgendaEntity, Long>{
+public interface ConsultorioRepository extends CrudRepository<ConsultorioEntity, Long>{
 
 }
