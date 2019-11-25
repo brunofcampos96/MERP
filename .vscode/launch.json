@@ -5,17 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "java",
-            "name": "Debug (Launch) - Current File",
+            "name": "Listen for XDebug",
+            "type": "php",
             "request": "launch",
-            "mainClass": "${file}"
+            "port": 9000
         },
         {
-            "type": "java",
-            "name": "Debug (Launch)-Application<MERP>",
+            "name": "Launch currently open script",
+            "type": "php",
             "request": "launch",
-            "mainClass": "com.Application",
-            "projectName": "MERP"
+            "program": "${file}",
+            "cwd": "${fileDirname}",
+            "port": 9000
         }
     ]
 }

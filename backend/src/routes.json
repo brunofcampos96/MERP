@@ -1,0 +1,44 @@
+[
+    {
+        "name"       : "/user/",
+        "controller" : "User",
+        "method"     : "getUsers",
+        "type"       : "GET"
+    },
+    {
+        "name"       : "/user/registerUser",
+        "controller" : "User",
+        "method"     : "registerUser",
+        "type"       : "POST"
+    },
+    {
+        "name"       : "/user/login",
+        "controller" : "User",
+        "method"     : "login",
+        "type"       : "POST"
+    },
+    {
+        "name"       : "/patient/",
+        "controller" : "Patient",
+        "method"     : "getPatients",
+        "type"       : "GET"
+    },
+    {
+        "name"       : "/patient/registerPatient",
+        "controller" : "Patient",
+        "method"     : "registerPatient",
+        "type"       : "POST"
+    },
+    {
+        "name"       : "/appointment/",
+        "controller" : "Appointment",
+        "method"     : "getAppointments",
+        "type"       : "GET"
+    },
+    {
+        "name"       : "/appointment/registerAppointment",
+        "controller" : "Appointment",
+        "method"     : "registerAppointment",
+        "type"       : "POST"
+    }
+]
