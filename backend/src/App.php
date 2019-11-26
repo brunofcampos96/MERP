@@ -11,18 +11,6 @@ class App extends \DI\Bridge\Slim\App {
 
     protected function configureContainer(ContainerBuilder $builder){
 
-        $paths = array(__DIR__."/Entity");
-        $isDevMode = false;
-
-        // the connection configuration
-        $dbParams = array(
-            'driver'   => 'pdo_mysql',
-            'user'     => 'root',
-            'password' => '123456',
-            'dbname'   => 'merp2',
-        );
-
-        $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
         $definitions = [
             'settings.displayErrorDetails' => true,
             EntityManager::class => function() {
@@ -30,7 +18,7 @@ class App extends \DI\Bridge\Slim\App {
                     'driver'   => 'pdo_mysql',
                     'user'     => 'root',
                     'password' => '123456',
-                    'dbname'   => 'merp2',
+                    'dbname'   => 'merp',
                 );
                 $paths = array(__DIR__."/Entity");
                 $isDevMode = true;
