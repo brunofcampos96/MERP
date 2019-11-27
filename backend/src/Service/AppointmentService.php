@@ -15,9 +15,9 @@ class AppointmentService{
         $this->entityManager = $entityManager;
     }
 
-    public function saveAppointment($userId, $patientId, $date){
+    public function saveAppointment($userId, $patientId, $date, $specialtyId){
         $date = \DateTime::createFromFormat('d/m/Y H:i:s', $date);
-        return $this->appointmentFactory->saveAppointment($userId, $patientId, $date);
+        return $this->appointmentFactory->saveAppointment($userId, $patientId, $date, $specialtyId);
     }
 
     public function getAppointments(){

@@ -18,6 +18,24 @@
         "type"       : "POST"
     },
     {
+        "name"       : "/doctor/",
+        "controller" : "Doctor",
+        "method"     : "getDoctors",
+        "type"       : "GET"
+    },
+    {
+        "name"       : "/doctor/registerDoctor",
+        "controller" : "Doctor",
+        "method"     : "registerDoctor",
+        "type"       : "POST"
+    },
+    {
+        "name"       : "/doctor/login",
+        "controller" : "Doctor",
+        "method"     : "login",
+        "type"       : "POST"
+    },
+    {
         "name"       : "/patient/",
         "controller" : "Patient",
         "method"     : "getPatients",

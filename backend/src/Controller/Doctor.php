@@ -6,49 +6,51 @@ use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class User{
+class Doctor{
 
-    private $userService;
+    private $doctorService;
     private $entityManager;
 
     public function __construct(EntityManager $entityManager,
-                                \App\Service\UserService $userService){
-        $this->userService = $userService;
+                                \App\Service\DoctorService $doctorService){
+        $this->doctorService = $doctorService;
         $this->entityManager = $entityManager;
     }
 
-    public function getUsers(Request $request, Response $response){
+    public function getDoctors(Request $request, Response $response){
         $queryParams = $request->getQueryParams();
         $name = isset($queryParams['name']) ? $queryParams['name'] : null;
-        $users = $this->userService->getUsers($name);
+        $doctors = $this->doctorService->getDoctors($name);
         $data = array(
             'error' => false,
             'message' => '',
-            'users' => $users
+            'doctors' => $doctors
         );
         return $response->withJson($data)
                         ->withStatus(200);
     }
 
-    public function registerUser(Request $request, Response $response){
+    public function registerDoctor(Request $request, Response $response){
         $this->entityManager->getConnection()->beginTransaction();
         try{
             $input = $request->getParsedBody();
             $email = $input['email'];
             $name = $input['name'];
+            $specialties = $input['specialties']; 
+            $crm = $input['crm'];
             $password = $input['password'];
-            if($this->validUser($email)){
-                $userId = $this->saveUser($email, $name, $password);
+            if($this->validDoctor($email)){
+                $userId = $this->saveDoctor($email, $name, $specialties, $crm, $password);
                 $this->entityManager->getConnection()->commit();
                 $data = array(
                     'error' => false,
-                    'message' => 'Usuário cadastrado com sucesso!',
+                    'message' => 'Médico cadastrado com sucesso!',
                     'id' => $userId
                 );
                 return $response->withJson($data)
                                 ->withStatus(200);
             }else{
-                throw new \Exception("Usuário já cadastrado!");
+                throw new \Exception("Médico já cadastrado!");
             }
         }catch(\Exception $e){
             $this->entityManager->getConnection()->rollBack();
@@ -67,12 +69,12 @@ class User{
             $email = $input['email'];
             $password = $input['password'];
             if($this->validLogin($email, $password)){
-                $userName = $this->getUserName($email);
+                $doctor = $this->getDoctor($email);
                 $data = array(
                     'error' => false,
                     'validLogin' => true,
                     'message' => '',
-                    'userName' => $userName
+                    'doctor' => $doctor
                 );
                 return $response->withJson($data)
                                 ->withStatus(200);
@@ -90,25 +92,25 @@ class User{
         }
     }
 
-    private function validUser($email){
-        $user = $this->userService->getUser($email);
-        if(!empty($user)) return false;
+    private function validDoctor($email){
+        $doctor = $this->doctorService->getDoctor($email);
+        if(!empty($doctor)) return false;
         else return true;
     }
 
     private function validLogin($email, $password){
-        $user = $this->userService->getUserLogin($email, $password);
-        if(!empty($user)) return true;
+        $doctor = $this->doctorService->getDoctorLogin($email, $password);
+        if(!empty($doctor)) return true;
         else return false;
     }
 
-    private function saveUser($email, $name, $password){
-        return $this->userService->saveUser($email, $name, $password);
+    private function saveDoctor($email, $name, $specialties, $crm, $password){
+        return $this->doctorService->saveDoctor($email, $name, $specialties, $crm, $password);
     }
 
-    private function getUserName($email){
-        $user = $this->userService->getUser($email);
-        return $user[0]->getName();
+    private function getDoctor($email){
+        $doctor = $this->doctorService->getDoctor($email);
+        return $doctor[0];
     }
 
 }

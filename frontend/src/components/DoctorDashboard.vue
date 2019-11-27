@@ -3,7 +3,7 @@
     <md-card md-with-hover>
         <md-ripple>
             <md-card-header>
-            <div class="md-title">PKOAD</div>
+            <div class="md-title">{{this.$route.params.doctor.name}}</div>
             <div class="md-subhead">It also have a ripple</div>
             </md-card-header>
 
@@ -22,7 +22,7 @@
 
 <script>
   export default {
-    name: 'Dashboard',
+    name: 'DoctorDashboard',
     data: () => ({
       showNavigation: false,
       showSidepanel: false

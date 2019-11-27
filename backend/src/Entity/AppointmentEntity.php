@@ -8,11 +8,18 @@ namespace App\Entity;
 class AppointmentEntity{
 
     /**
-     * Many appointments have one user. This is the owning side.
-     * @ManyToOne(targetEntity="UserEntity", inversedBy="appointment")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
+     * One Appointment has one Specialty
+     * @OneToOne(targetEntity="SpecialtyEntity")
+     * @JoinColumn(name="specialty_id", referencedColumnName="id")
      */
-    private $user;
+    private $specialty;
+
+    /**
+     * Many appointments have one Doctor. This is the owning side.
+     * @ManyToOne(targetEntity="DoctorEntity", inversedBy="appointment")
+     * @JoinColumn(name="doctor_id", referencedColumnName="id")
+     */
+    private $doctor;
 
     /**
      * Many appointments have one patient. This is the owning side.
@@ -21,10 +28,11 @@ class AppointmentEntity{
      */
     private $patient;
 
-    public function setAppointment($user, $patient, $date){
-        $this->user = $user;
+    public function setAppointment($doctor, $patient, $date, $specialty){
+        $this->doctor = $doctor;
         $this->patient = $patient;
         $this->date = $date;
+        $this->specialty = $specialty;
     }
 
     /**
@@ -76,10 +84,18 @@ class AppointmentEntity{
     }
 
     /**
-     * Get many appointments have one user. This is the owning side.
+     * Get many appointments have one doctor. This is the owning side.
      */ 
-    public function getUser()
+    public function getDoctor()
     {
-        return $this->user;
+        return $this->doctor;
+    }
+
+    /**
+     * Get specialty
+     */ 
+    public function getSpecialty()
+    {
+        return $this->specialty;
     }
 }

@@ -7,7 +7,7 @@
           <md-button class="md-icon-button" @click="showNavigation = true">
             <md-icon>menu</md-icon>
           </md-button>
-          <span class="md-title">MERP</span>
+          <span class="md-title">{{title}}</span>
 
           <!-- <div class="md-toolbar-section-end">
             <md-button @click="showSidepanel = true">Favorites</md-button>
@@ -84,7 +84,7 @@
         </md-drawer>
       </div>
     </div>
-    <router-view @authenticated="setAuthenticated" />
+    <router-view @authenticated="setAuthenticated" @title="setTitle" />
   </div>
 </template>
 
@@ -94,6 +94,7 @@ export default {
   data() {
     return {
       authenticated: false,
+      title: null,
       showNavigation: false,
       showSidepanel: false
     };
@@ -104,6 +105,10 @@ export default {
     }
   },
   methods: {
+    setTitle(title){
+      this.title = title;
+      console.log(title);
+    },
     setAuthenticated(status) {
       this.authenticated = status;
     },
@@ -131,10 +136,15 @@ h1 {
     justify-content: center;
 } */
 
-.page-container {
+/* .page-container {
     min-height: 100vh;
     overflow: hidden;
     position: relative;
+    border: 1px solid rgba(#000, .12);
+  } */
+
+  .md-app {
+    min-height: 350px;
     border: 1px solid rgba(#000, .12);
   }
 
@@ -143,9 +153,9 @@ h1 {
     max-width: calc(100vw - 125px);
   }
 
-  .md-content {
+  /* .md-content {
     padding: 16px;
-  }
+  } */
   .button:hover {
     background-color: #cacaca
   }

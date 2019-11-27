@@ -20,9 +20,9 @@ class UserService{
         return $usersRepo->findBy(array('email' => $email));
     }
 
-    public function saveUser($email, $name, $specialties, $crm, $password){
+    public function saveUser($email, $name, $password){
         $password = md5($password);
-        return $this->userFactory->saveUser($email, $name, $specialties, $crm, $password);
+        return $this->userFactory->saveUser($email, $name, $password);
     }
 
     public function getUserLogin($email, $password){
@@ -44,26 +44,8 @@ class UserService{
                 'id' => $user->getId(),
                 'email' => $user->getEmail(),
                 'name' => $user->getName(),
-                'crm' => $user->getCrm(),
-                'specialities' => array(),
                 'appointments' => array()
             );
-            $specialties = $user->getSpecialities();
-            foreach($specialties as $specialty){
-                $specialtyData = array(
-                    'id' => $specialty->getId(),
-                    'description' => $specialty->getDescription()
-                );
-                array_push($userData['specialities'], $specialtyData);
-            }
-            $appointments = $user->getAppointments();
-            /* foreach($appointments as $appointment){
-                $appointmentData = array(
-                    'id' => $specialty->getId(),
-                    'description' => $specialty->getDescription()
-                );
-                array_push($userData['appointments'], $appointmentData);
-            } */
             array_push($sanatizedUsers, $userData);
         }
         return $sanatizedUsers;

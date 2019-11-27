@@ -17,20 +17,12 @@ class UserFactory{
         return $this->entityManager->getRepository('App\Entity\UserEntity');
     }
 
-    public function saveUser($email, $name, $specialties, $crm, $password){
+    public function saveUser($email, $name, $password){
         $user = new UserEntity();
-        $user->setUser($email, $name, $crm, $password);
+        $user->setUser($email, $name, $password);
         $this->entityManager->persist($user);
-        $this->setUserSpecialties($user, $specialties);
         $this->entityManager->flush();
         return $user->getId();
-    }
-
-    private function setUserSpecialties($user, $specialties){
-        foreach($specialties as $specialty){
-            $specialtyInstance = $this->entityManager->find("App\Entity\SpecialtyEntity", $specialty);
-            $user->setSpecialty($specialtyInstance);
-        }
     }
 
     public function getUserLogin($email, $password){

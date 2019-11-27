@@ -100,15 +100,26 @@ export default {
           })
           .then(response => {
             this.info = response;
-            if (
-              response.data.error === false &&
-              response.data.validLogin === true
-            ) {
+            if ( response.data.error === false && response.data.validLogin === true ) {
               this.$emit("authenticated", true);
-              this.$router.push({ name: "dashboard" });
+              this.$emit("title", response.data.userName);
+              this.$router.push({ name: "dashboard", params:{ user: response.data}});
             } else {
-              this.sending = false;
-              this.showDialog = true;
+                this.$http
+                .post("http://localhost/MERP/backend/index.php/doctor/login", {
+                    email: this.form.email,
+                    password: this.form.password
+                })
+                .then(response => {
+                    if( response.data.error === false && response.data.validLogin === true ){
+                        this.$emit("authenticated", true);
+                        this.$emit("title", response.data.doctor.name);
+                        this.$router.push({ name: "doctor_dashboard", params:{ doctor: response.data.doctor}});
+                    }else {
+                        this.sending = false;
+                        this.showDialog = true;
+                    }
+                })
             }
           });
       } else {

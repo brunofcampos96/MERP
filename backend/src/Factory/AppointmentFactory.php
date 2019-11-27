@@ -13,11 +13,12 @@ class AppointmentFactory{
         $this->entityManager = $entityManager;
     }
 
-    public function saveAppointment($userId, $patientId, $date){
+    public function saveAppointment($userId, $patientId, $date, $specialtyId){
         $appointment = new AppointmentEntity();
         $patient = $this->entityManager->find('App\Entity\PatientEntity', $patientId);
         $user = $this->entityManager->find('App\Entity\UserEntity', $userId);
-        $appointment->setAppointment($user, $patient, $date);
+        $specialty = $this->entityManager->find('App\Entity\SpecialtyEntity', $specialtyId);
+        $appointment->setAppointment($user, $patient, $date, $specialty);
         $this->entityManager->persist($appointment);
         $this->entityManager->flush();
         return $appointment->getId();

@@ -36,7 +36,8 @@ class Appointment{
             $userId = $body['userId'];
             $patientId = $body['patientId'];
             $date = $body['date'];
-            $appointmentId = $this->saveAppointment($userId, $patientId, $date);
+            $specialtyId = $body['specialtyId'];
+            $appointmentId = $this->saveAppointment($userId, $patientId, $date, $specialtyId);
             $this->entityManager->getConnection()->commit();
             $data = array(
                 'error' => false,
@@ -57,8 +58,8 @@ class Appointment{
         
     }
 
-    private function saveAppointment($userId, $patientId, $date){
-        return $this->appointmentService->saveAppointment($userId, $patientId, $date);
+    private function saveAppointment($userId, $patientId, $date, $specialtyId){
+        return $this->appointmentService->saveAppointment($userId, $patientId, $date, $specialtyId);
     }
 
 }

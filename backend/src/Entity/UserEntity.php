@@ -7,42 +7,6 @@ namespace App\Entity;
  */
 class UserEntity{
 
-    /**
-     * Many Users have Many Specialtys.
-     * @ManyToMany(targetEntity="SpecialtyEntity")
-     * @JoinTable(name="users_specialties",
-     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="specialty_id", referencedColumnName="id")}
-     * )
-     */
-    private $specialties;
-
-     /**
-     * One User has many appointments. This is the inverse side.
-     * @OneToMany(targetEntity="AppointmentEntity", mappedBy="UserEntity")
-     */
-    private $appointments;
-
-    public function __construct() {
-        $this->specialties = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->appointments = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    public function setSpecialty(SpecialtyEntity $specialty){
-        $this->specialties[] = $specialty;
-    }
-
-    public function getSpecialities(){
-        return $this->specialties;
-    }
-
-    public function setAppintment(AppointmentEntity $appointment){
-        $this->appointments[] = $appointment;
-    }
-
-    public function getAppointments(){
-        return $this->appointments;
-    }
 
     /**
      * @Id 
@@ -54,17 +18,18 @@ class UserEntity{
      * @Column(length=60) 
      */
     private $email;
-    /** @Column(length=100, nullable=true) */
+    /** @Column(length=100) */
     private $name;
-    /** @Column(length=50, nullable=true) */
-    private $crm;
-    /** @Column(length=32, nullable=true) */
+    /** @Column(length=32) */
     private $password;
+
+
+    public function __construct() {
+    }
     
-    public function setUser($email, $name, $crm, $password){
+    public function setUser($email, $name, $password){
         $this->email = $email;
         $this->name = $name;
-        $this->crm = $crm;
         $this->password = $password;
     }
 
@@ -84,26 +49,6 @@ class UserEntity{
     public function setPassword($password)
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of crm
-     */ 
-    public function getCrm()
-    {
-        return $this->crm;
-    }
-
-    /**
-     * Set the value of crm
-     *
-     * @return  self
-     */ 
-    public function setCrm($crm)
-    {
-        $this->crm = $crm;
 
         return $this;
     }
