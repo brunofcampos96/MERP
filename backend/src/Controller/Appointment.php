@@ -19,7 +19,9 @@ class Appointment{
     }
 
     public function getAppointments(Request $request, Response $response){
-        $appointments = $this->appointmentService->getAppointments();
+        $queryParams = $request->getQueryParams();
+        $doctorId = isset($queryParams['doctorId']) ? $queryParams['doctorId'] : null;
+        $appointments = $this->appointmentService->getAppointments($doctorId);
         $data = array(
             'error' => false,
             'message' => '',
@@ -33,11 +35,11 @@ class Appointment{
         $this->entityManager->getConnection()->beginTransaction();
         try{
             $body = $request->getParsedBody();
-            $userId = $body['userId'];
+            $doctorId = $body['doctorId'];
             $patientId = $body['patientId'];
             $date = $body['date'];
             $specialtyId = $body['specialtyId'];
-            $appointmentId = $this->saveAppointment($userId, $patientId, $date, $specialtyId);
+            $appointmentId = $this->saveAppointment($doctorId, $patientId, $date, $specialtyId);
             $this->entityManager->getConnection()->commit();
             $data = array(
                 'error' => false,
@@ -53,13 +55,13 @@ class Appointment{
                 'message' => $e->getMessage()
             );
             return $response->withJson($data)
-                            ->withStatus(500);
+                            ->withStatus(200);
         }
         
     }
 
-    private function saveAppointment($userId, $patientId, $date, $specialtyId){
-        return $this->appointmentService->saveAppointment($userId, $patientId, $date, $specialtyId);
+    private function saveAppointment($doctorId, $patientId, $date, $specialtyId){
+        return $this->appointmentService->saveAppointment($doctorId, $patientId, $date, $specialtyId);
     }
 
 }

@@ -17,7 +17,8 @@ class UserService{
 
     public function getUser($email){
         $usersRepo = $this->userFactory->getUsers();
-        return $usersRepo->findBy(array('email' => $email));
+        $users = $usersRepo->findBy(array('email' => $email));
+        return $this->sanitazeUsers($users);
     }
 
     public function saveUser($email, $name, $password){

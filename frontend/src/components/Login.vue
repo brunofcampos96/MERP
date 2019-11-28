@@ -102,8 +102,11 @@ export default {
             this.info = response;
             if ( response.data.error === false && response.data.validLogin === true ) {
               this.$emit("authenticated", true);
-              this.$emit("title", response.data.userName);
-              this.$router.push({ name: "dashboard", params:{ user: response.data}});
+              this.$emit("username", response.data.userName);
+              this.$emit("userData", response.data.user);
+              this.$emit("screenName", "Painel de Controle");
+              this.$emit("userType", "user");
+              this.$router.push({ name: "dashboard", params:{ userType: 'user', data: response.data}});
             } else {
                 this.$http
                 .post("http://localhost/MERP/backend/index.php/doctor/login", {
@@ -113,8 +116,11 @@ export default {
                 .then(response => {
                     if( response.data.error === false && response.data.validLogin === true ){
                         this.$emit("authenticated", true);
-                        this.$emit("title", response.data.doctor.name);
-                        this.$router.push({ name: "doctor_dashboard", params:{ doctor: response.data.doctor}});
+                        this.$emit("username", response.data.doctor.name);
+                        this.$emit("userData", response.data.doctor);
+                        this.$emit("screenName", 'Consultas Marcadas');
+                        this.$emit("userType", 'doctor');
+                        this.$router.push({ name: "dashboard", params:{ userType: 'doctor', data: response.data.doctor}});
                     }else {
                         this.sending = false;
                         this.showDialog = true;
@@ -122,8 +128,6 @@ export default {
                 })
             }
           });
-      } else {
-        console.log("A username and password must be present");
       }
     },
     getValidationClass(fieldName) {

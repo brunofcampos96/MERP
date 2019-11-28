@@ -59,7 +59,7 @@ class Doctor{
                 'message' => $e->getMessage()
             );
             return $response->withJson($data)
-                            ->withStatus(500);
+                            ->withStatus(200);
         }
     }
 

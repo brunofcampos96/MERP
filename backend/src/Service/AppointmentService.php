@@ -15,14 +15,15 @@ class AppointmentService{
         $this->entityManager = $entityManager;
     }
 
-    public function saveAppointment($userId, $patientId, $date, $specialtyId){
-        $date = \DateTime::createFromFormat('d/m/Y H:i:s', $date);
-        return $this->appointmentFactory->saveAppointment($userId, $patientId, $date, $specialtyId);
+    public function saveAppointment($doctorId, $patientId, $date, $specialtyId){
+        $date = \DateTime::createFromFormat('Y/m/d H:i:s', $date);
+        return $this->appointmentFactory->saveAppointment($doctorId, $patientId, $date, $specialtyId);
     }
 
-    public function getAppointments(){
+    public function getAppointments($doctorId){
         $appointmentRepo = $this->appointmentFactory->getAppointments();
-        $appointments = $appointmentRepo->findAll();
+        if(empty($doctorId)) $appointments = $appointmentRepo->findAll();
+        else $appointmentRepo->findBy(array('doctor_id' => $doctorId));
         return $this->sanatizeAppointments($appointments);
     }
 
@@ -31,10 +32,10 @@ class AppointmentService{
         foreach($appointments as $appointment){
             $appointmentData = array(
                 'id' => $appointment->getId(),
-                'user' => array(
-                    'name' => $appointment->getUser()->getName(),
-                    'crm' => $appointment->getUser()->getCrm(),
-                    'email' => $appointment->getUser()->getEmail()
+                'doctor' => array(
+                    'name' => $appointment->getDoctor()->getName(),
+                    'crm' => $appointment->getDoctor()->getCrm(),
+                    'email' => $appointment->getDoctor()->getEmail()
                 ),
                 'patient' => array(
                     'cpf' => $appointment->getPatient()->getCpf(),

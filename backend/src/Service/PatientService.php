@@ -31,7 +31,7 @@ class PatientService{
     public function savePatient($cpf, $name, $sex, $birthdate, $address, $phone, $health_insurance, $number_covenant){
         $cpf = preg_replace('/[^0-9\s]/', '', $cpf);
         $phone = preg_replace('/[^0-9]/', '', $phone);
-        $birthdate = \DateTime::createFromFormat('d/m/Y', $birthdate);
+        $birthdate = \DateTime::createFromFormat('Y-m-d', $birthdate);
         return $this->patientFactory->savePatient($cpf, $name, $sex, $birthdate, $address, $phone, $health_insurance, $number_covenant);
     }
 

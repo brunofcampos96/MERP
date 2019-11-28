@@ -8,7 +8,7 @@ namespace App\Entity;
 class DoctorEntity{
 
     /**
-     * Many Users have Many Specialtys.
+     * Many Doctor have Many Specialtys.
      * @ManyToMany(targetEntity="SpecialtyEntity")
      * @JoinTable(name="doctor_specialties",
      *      joinColumns={@JoinColumn(name="doctor_id", referencedColumnName="id")},
@@ -18,8 +18,8 @@ class DoctorEntity{
     private $specialties;
 
      /**
-     * One User has many appointments. This is the inverse side.
-     * @OneToMany(targetEntity="AppointmentEntity", mappedBy="UserEntity")
+     * One Doctor has many appointments. This is the inverse side.
+     * @OneToMany(targetEntity="AppointmentEntity", mappedBy="doctor")
      */
     private $appointments;
 

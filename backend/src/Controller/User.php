@@ -57,7 +57,7 @@ class User{
                 'message' => $e->getMessage()
             );
             return $response->withJson($data)
-                            ->withStatus(500);
+                            ->withStatus(200);
         }
     }
 
@@ -67,12 +67,12 @@ class User{
             $email = $input['email'];
             $password = $input['password'];
             if($this->validLogin($email, $password)){
-                $userName = $this->getUserName($email);
+                $userData = $this->getUser($email);
                 $data = array(
                     'error' => false,
                     'validLogin' => true,
                     'message' => '',
-                    'userName' => $userName
+                    'user' => $userData
                 );
                 return $response->withJson($data)
                                 ->withStatus(200);
@@ -106,9 +106,9 @@ class User{
         return $this->userService->saveUser($email, $name, $password);
     }
 
-    private function getUserName($email){
+    private function getUser($email){
         $user = $this->userService->getUser($email);
-        return $user[0]->getName();
+        return $user[0];
     }
 
 }
