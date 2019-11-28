@@ -22,7 +22,7 @@
             </md-list-item>
 
             <md-list-item md-expand :md-expanded.sync="expandPatient" v-if="userType == 'user'" class='button'>
-              <md-icon>list_alt</md-icon>
+              <md-icon>portrait</md-icon>
               <span class="md-list-item-text">Paciente</span>
               <md-list slot="md-expand">
                 <md-list-item @click="patient('Cadastro de Paciente', 'add')" class="md-inset">Cadastrar</md-list-item>
@@ -49,16 +49,6 @@
                 <md-list-item @click="doctor('Consulta Médico', 'select')" class="md-inset">Consultar</md-list-item>
                 <md-list-item @click="doctor('Excluir Médico', 'delete')" class="md-inset">Excluir</md-list-item>
               </md-list>
-            </md-list-item>
-
-            <md-list-item class='button'>
-              <md-icon>delete</md-icon>
-              <span class="md-list-item-text">Trash</span>
-            </md-list-item>
-
-            <md-list-item class='button'>
-              <md-icon>error</md-icon>
-              <span class="md-list-item-text">Spam</span>
             </md-list-item>
 
             <md-list-item class='xablau button'>

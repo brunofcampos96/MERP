@@ -16,14 +16,18 @@ class AppointmentService{
     }
 
     public function saveAppointment($doctorId, $patientId, $date, $specialtyId){
-        $date = \DateTime::createFromFormat('Y/m/d H:i:s', $date);
+        $date = str_replace('T', " ", $date);
+        $date = \DateTime::createFromFormat('Y-m-d H:i', $date);
         return $this->appointmentFactory->saveAppointment($doctorId, $patientId, $date, $specialtyId);
     }
 
     public function getAppointments($doctorId){
         $appointmentRepo = $this->appointmentFactory->getAppointments();
         if(empty($doctorId)) $appointments = $appointmentRepo->findAll();
-        else $appointmentRepo->findBy(array('doctor_id' => $doctorId));
+        else {
+            $doctorAppointments = $this->appointmentFactory->getDoctorAppointments($doctorId);
+            $appointments = $appointmentRepo->findBy(array('id' => $doctorAppointments));
+        }
         return $this->sanatizeAppointments($appointments);
     }
 

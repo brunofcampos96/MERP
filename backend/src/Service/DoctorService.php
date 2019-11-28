@@ -31,10 +31,14 @@ class DoctorService{
         return $this->doctorFactory->getDoctorLogin($email, $password);
     }
 
-    public function getDoctors($name){
+    public function getDoctors($name, $specialty){
         $doctorRepo = $this->doctorFactory->getDoctors();
-        if(empty($name)) $doctors = $doctorRepo->findAll();
-        else $doctors = $doctorRepo->findBy(array('name' => $name));
+        if(!empty($name)) $doctors = $doctorRepo->findBy(array('name' => $name));
+        elseif(!empty($specialty)){
+            $doctorsId = $this->doctorFactory->getDoctorsBySpecialty($specialty);
+            $doctors = $doctorRepo->findBy(array('id' => $doctorsId));
+        } 
+        else $doctors = $doctorRepo->findAll();
         return $this->sanitazeDoctors($doctors);
     }
 

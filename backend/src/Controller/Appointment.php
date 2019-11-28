@@ -20,7 +20,7 @@ class Appointment{
 
     public function getAppointments(Request $request, Response $response){
         $queryParams = $request->getQueryParams();
-        $doctorId = isset($queryParams['doctorId']) ? $queryParams['doctorId'] : null;
+        $doctorId = !empty($queryParams['doctorId']) ? $queryParams['doctorId'] : null;
         $appointments = $this->appointmentService->getAppointments($doctorId);
         $data = array(
             'error' => false,

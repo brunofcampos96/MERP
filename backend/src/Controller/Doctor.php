@@ -20,7 +20,8 @@ class Doctor{
     public function getDoctors(Request $request, Response $response){
         $queryParams = $request->getQueryParams();
         $name = isset($queryParams['name']) ? $queryParams['name'] : null;
-        $doctors = $this->doctorService->getDoctors($name);
+        $specialty = isset($queryParams['specialty']) ? $queryParams['specialty'] : null;
+        $doctors = $this->doctorService->getDoctors($name, $specialty);
         $data = array(
             'error' => false,
             'message' => '',

@@ -45,8 +45,6 @@ class AppointmentEntity{
      * @Column(type="datetime")
      */
     private $date;
-
-
     /**
      * Get the value of id
      */ 

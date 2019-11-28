@@ -58,5 +58,11 @@
         "controller" : "Appointment",
         "method"     : "registerAppointment",
         "type"       : "POST"
+    },
+    {
+        "name"       : "/specialty/",
+        "controller" : "Specialty",
+        "method"     : "getSpecialties",
+        "type"       : "GET"
     }
 ]

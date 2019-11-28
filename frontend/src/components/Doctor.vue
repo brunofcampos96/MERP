@@ -33,12 +33,15 @@
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('specialties')">
                 <label for="specialty">Especialidade</label>
-                <md-input
+                <md-select
                   name="specialty"
                   id="specialty"
                   v-model="form.specialty"
                   :disabled="sending"
-                />
+                  multiple
+                >
+                <md-option v-for="specialty in avSpecialties" :value="specialty.id" :key="specialty.id">{{specialty.description}}</md-option>
+                </md-select>
                 <span
                   class="md-error"
                   v-if="!$v.form.specialty.required"
@@ -103,7 +106,8 @@ export default {
     },
     userSaved: false,
     sending: false,
-    lastUser: null
+    lastUser: null,
+    avSpecialties : null
   }),
   validations: {
     form: {
@@ -115,7 +119,7 @@ export default {
         required,
         minLength: minLength(3)
       },
-      specialties: {
+      specialty: {
         required,
         maxLength: maxLength(3)
       },
@@ -152,11 +156,11 @@ export default {
       this.sending = true;
       this.$http
         .post(
-          "http://localhost/MERP/backend/index.php/doctor/registerPatient",
+          "http://localhost/MERP/backend/index.php/doctor/registerDoctor",
           {
             email: this.form.email,
             name: this.form.name,
-            specialties: this.form.specialties,
+            specialties: this.form.specialty,
             crm: this.form.crm,
             password: this.form.password
           }
@@ -179,10 +183,21 @@ export default {
       if (!this.$v.$invalid) {
         this.saveUser();
       }
+    },
+    getSpecialties(){
+      this.$http
+        .get(
+          "http://localhost/MERP/backend/index.php/specialty/")
+        .then(response => {
+          if (response.data.error === false) {
+            this.avSpecialties = response.data.specialties
+          }
+        });
     }
   },
   mounted() {
     this.setScreenName();
+    this.getSpecialties();
   }
 };
 </script>

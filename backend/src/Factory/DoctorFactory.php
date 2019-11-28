@@ -4,6 +4,7 @@ namespace App\Factory;
 
 use App\Entity\DoctorEntity;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 class DoctorFactory{
 
@@ -37,5 +38,24 @@ class DoctorFactory{
         $doctorsRepo = $this->entityManager->getRepository('App\Entity\DoctorEntity');
         return $doctorsRepo->findBy(array('email' => $email, 'password' => $password));
 
+    }
+
+    public function getDoctorsBySpecialty($specialty){
+        $data = array();
+        $sql = '
+            SELECT D.id 
+              FROM doctor D
+              JOIN doctor_specialties DS
+                ON DS.doctor_id = D.id
+             WHERE DS.specialty_id = :SPECIALTY
+        ';
+        $params = array(
+            'SPECIALTY' => $specialty
+        );
+        $result = $this->entityManager->getConnection()->fetchAll($sql, $params);
+        foreach($result as $doctor){
+            array_push($data, $doctor['id']);
+        }
+        return $data;
     }
 }

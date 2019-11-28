@@ -16,14 +16,14 @@
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('specialty')">
                 <label for="specialty">Especialidade</label>
-                <md-select
+                <md-select 
+                  @md-selected="loadDoctors"
                   name="specialty"
                   id="specialty"
                   v-model="form.specialty"
                   :disabled="sending"
                 >
-                <md-option value="M">M</md-option>
-                  <md-option value="F">F</md-option>
+                <md-option v-for="specialty in avSpecialties" :value="specialty.id" :key="specialty.id">{{specialty.description}}</md-option>
                 </md-select>
                 <span class="md-error" v-if="!$v.form.specialty.required">Selecione a especialidade</span>
               </md-field>
@@ -32,9 +32,8 @@
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('doctor')">
                 <label for="doctor">Médico</label>
-                <md-select name="doctor" id="doctor" v-model="form.doctor" :disabled="sending">
-                    <md-option value="M">M</md-option>
-                  <md-option value="F">F</md-option>
+                <md-select name="doctor" id="doctor" v-model="form.doctor" :disabled="sending || !form.specialty">
+                  <md-option v-for="doctor in doctors" :value="doctor.id" :key="doctor.id">{{doctor.name}}</md-option>
                 </md-select>
                 <span class="md-error" v-if="!$v.form.doctor.required">Selecione o Médico</span>
               </md-field>
@@ -46,8 +45,7 @@
               <md-field :class="getValidationClass('patient')">
                 <label for="patient">Paciente</label>
                 <md-select name="patient" id="patient" v-model="form.patient" :disabled="sending">
-                  <md-option value="M">M</md-option>
-                  <md-option value="F">F</md-option>
+                  <md-option v-for="patient in patients" :value="patient.id" :key="patient.id">{{patient.name}}</md-option>
                 </md-select>
                 <span class="md-error">Selecione o paciente</span>
               </md-field>
@@ -55,7 +53,7 @@
           </div>
 
           <md-field :class="getValidationClass('date')">
-            <md-input type="date" name="date" id="date" v-model="form.date" :disabled="sending" />
+            <md-input type="datetime-local" name="date" id="date" v-model="form.date" :disabled="sending" />
             <span class="md-error" v-if="!$v.form.date.required">Selecione a Data da Consulta</span>
             <span class="md-error" v-else-if="!$v.form.date.date">Invalid date</span>
           </md-field>
@@ -64,7 +62,7 @@
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-card-actions>
-          <md-button type="submit" class="md-primary" :disabled="sending">Create user</md-button>
+          <md-button type="submit" class="md-primary" :disabled="sending">Marcar consulta</md-button>
         </md-card-actions>
       </md-card>
 
@@ -93,7 +91,10 @@ export default {
     },
     userSaved: false,
     sending: false,
-    lastUser: null
+    lastUser: null,
+    avSpecialties : null,
+    doctors: null,
+    patients: null
   }),
   validations: {
     form: {
@@ -112,6 +113,28 @@ export default {
     }
   },
   methods: {
+    loadDoctors(){
+      this.doctors = null;
+      this.form.doctor = null;
+      this.$http
+        .get(
+          "http://localhost/MERP/backend/index.php/doctor/?specialty="+this.form.specialty)
+        .then(response => {
+          if (response.data.error === false) {
+            this.doctors = response.data.doctors
+          }
+        });
+    },
+    loadPatients(){
+      this.$http
+        .get(
+          "http://localhost/MERP/backend/index.php/patient/")
+        .then(response => {
+          if (response.data.error === false) {
+            this.patients = response.data.patients
+          }
+        });
+    },
     setScreenName() {
       this.$emit("screenName", "Médico");
     },
@@ -137,14 +160,10 @@ export default {
         .post(
           "http://localhost/MERP/backend/index.php/appointment/registerAppointment",
           {
-            /* specialty : this.form.specialty,
-            doctor : this.form.doctor,
-            patient : this.form.patient,
-            date : this.form.date */
-            specialtyId : 4,
-            doctorId : 1,
-            patientId : 1,
-            date : '29/11/2019 18:00:28'
+            specialtyId : this.form.specialty,
+            doctorId : this.form.doctor,
+            patientId : this.form.patient,
+            date : this.form.date
           }
         )
         .then(response => {
@@ -165,10 +184,22 @@ export default {
       if (!this.$v.$invalid) {
         this.saveUser();
       }
+    },
+    loadSpecialties(){
+      this.$http
+        .get(
+          "http://localhost/MERP/backend/index.php/specialty/")
+        .then(response => {
+          if (response.data.error === false) {
+            this.avSpecialties = response.data.specialties
+          }
+        });
     }
   },
   mounted() {
     this.setScreenName();
+    this.loadSpecialties();
+    this.loadPatients();
   }
 };
 </script>

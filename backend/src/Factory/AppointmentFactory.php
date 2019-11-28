@@ -27,4 +27,21 @@ class AppointmentFactory{
     public function getAppointments(){
         return $this->entityManager->getRepository('App\Entity\AppointmentEntity');
     }
+
+    public function getDoctorAppointments($doctorId){
+        $data = array();
+        $sql = '
+            SELECT id 
+              FROM appointment
+             WHERE doctor_id = :DOCTORID
+        ';
+        $params = array(
+            'DOCTORID' => $doctorId
+        );
+        $result = $this->entityManager->getConnection()->fetchAll($sql, $params);
+        foreach($result as $appointment){
+            array_push($data, $appointment['id']);
+        }
+        return $data;
+    }
 }
