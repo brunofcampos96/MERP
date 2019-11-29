@@ -33,7 +33,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   name: "Dashboard",
@@ -45,9 +44,10 @@ export default {
   methods: {
     getAppointments() {
       let id = 0;
-      // if(this.params.userType == 'doctor'){
-      //   id = this.params.data.id
-      // }
+      if(this.userType == 'doctor'){
+        id = this.userId
+      }
+      console.log(this.userType)
       this.$http
         .get(
           `http://localhost/MERP/backend/index.php/appointment/?doctorId=` + id
@@ -55,7 +55,6 @@ export default {
         .then(response => {
           if (response.data.error === false) {
             this.appointments = response.data.appointments;
-            console.log(this.appointments);
           } else {
           }
         });
@@ -63,6 +62,10 @@ export default {
   },
   mounted (){
     this.getAppointments();
+  },
+  created (){
+    this.userId = this.$route.params.data.id
+    this.userType = this.$route.params.userType
   }
 };
 </script>
