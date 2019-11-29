@@ -120,8 +120,7 @@ export default {
         minLength: minLength(3)
       },
       specialty: {
-        required,
-        maxLength: maxLength(3)
+        required
       },
       crm: {
         required

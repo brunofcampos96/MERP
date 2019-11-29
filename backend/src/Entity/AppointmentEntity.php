@@ -8,8 +8,8 @@ namespace App\Entity;
 class AppointmentEntity{
 
     /**
-     * One Appointment has one Specialty
-     * @OneToOne(targetEntity="SpecialtyEntity")
+     * Many Appointments have one Specialty
+     * @ManyToOne(targetEntity="SpecialtyEntity")
      * @JoinColumn(name="specialty_id", referencedColumnName="id")
      */
     private $specialty;
