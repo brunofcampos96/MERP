@@ -1,33 +1,20 @@
 <template>
   <div>
-    <div v-if="this.$route.params.userType == 'user'">
+    <div v-if="this.appointments">
       <md-card v-for="appointment in appointments" :key="appointment.id" md-with-hover>
         <md-ripple>
           <md-card-header>
-            <div class="md-title">{{appointment.patient.name}}</div>
-            <div class="md-subhead">{{appointment.doctor.name}}</div>
-          </md-card-header>
-          <md-card-actions>
-            <md-button>Action</md-button>
-            <md-button>Action</md-button>
-          </md-card-actions>
-        </md-ripple>
-      </md-card>
-    </div>
-    <div v-if="this.$route.params.userType == 'doctor' && this.appointments">
-      <md-card v-for="appointment in appointments" :key="appointment.id" md-with-hover>
-        <md-ripple>
-          <md-card-header>
-            <div class="md-title">{{appointment.patient.name}}</div>
-            <div class="md-subhead">{{appointment.doctor.name}}</div>
+            <div class="md-title">{{appointment.specialty.description}}</div>
+            <div >{{appointment.patient.name}}</div>
+            <div >{{appointment.doctor.name}}</div>
           </md-card-header>
 
-          <md-card-content>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio itaque ea, nostrum odio. Dolores, sed accusantium quasi non.</md-card-content>
+          <md-card-content>{{appointment.date}}</md-card-content>
 
-          <md-card-actions>
+          <!-- <md-card-actions>
             <md-button>Action</md-button>
             <md-button>Action</md-button>
-          </md-card-actions>
+          </md-card-actions> -->
         </md-ripple>
       </md-card>
     </div>

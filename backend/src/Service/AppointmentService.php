@@ -23,10 +23,10 @@ class AppointmentService{
 
     public function getAppointments($doctorId){
         $appointmentRepo = $this->appointmentFactory->getAppointments();
-        if(empty($doctorId)) $appointments = $appointmentRepo->findAll();
+        if(empty($doctorId)) $appointments = $appointmentRepo->findBy(array(), array('date' => 'ASC'));
         else {
             $doctorAppointments = $this->appointmentFactory->getDoctorAppointments($doctorId);
-            $appointments = $appointmentRepo->findBy(array('id' => $doctorAppointments));
+            $appointments = $appointmentRepo->findBy(array('id' => $doctorAppointments), array('date' => 'ASC'));
         }
         return $this->sanatizeAppointments($appointments);
     }
@@ -49,7 +49,10 @@ class AppointmentService{
                     'health_insurance' => $appointment->getPatient()->getHealth_insurance(),
                     'number_covenant' => $appointment->getPatient()->getNumber_covenant()
                 ),
-                'date' => $appointment->getDate()
+                'specialty' => array(
+                    'description' => $appointment->getSpecialty()->getDescription(),
+                ),
+                'date' => $appointment->getDate()->format('d/m/Y H:i')
             );
             array_push($sanatizedAppointments, $appointmentData);
         }
